@@ -1,16 +1,11 @@
+
+# Node
+node_modules/
+
 test-results
-node_modules
 
-# Output
-.output
-.vercel
-/.svelte-kit
-/build
-/dist
-
-# OS
-.DS_Store
-Thumbs.db
+# Misc
+devnotes.md
 
 # Env
 .env
@@ -18,6 +13,29 @@ Thumbs.db
 !.env.example
 !.env.test
 
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# sveltekit
+*.local
+.svelte-kit/
+.output
+.vercel
+/build
+
+
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+
