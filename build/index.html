@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="./_app/immutable/assets/0.CvrAbse_.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/2.CnlTZ7xn.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.DOS4H5KY.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/entry.CmwfTzX1.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/runtime.Cg5oSnlZ.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.BeXYSgLZ.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/store.DeU8N9Gq.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/disclose-version.Ch3PDx1e.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/props.D0SBms_E.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.D87RpRNr.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.BX-0I909.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div><!--[--><!--[--><!----><!----><div class="flex w-full flex-row p-4"><div class="w-[30%]"><div style="height: 8em; width: 25em;"><svg class=" svelte-n5tuka" width="100%" height="100%" viewBox="0 0 0 0" preserveAspectRatio="none" stroke-width="6" aria-hidden="true" style="fill: none; touch-action: none;"><path style="fill: #7bcbec; d: path('');" stroke="#7bcbec" class="svelte-n5tuka"></path><path style="stroke: #22a8df; d: path('');" fill="none" stroke-linecap="square" class="svelte-n5tuka"></path><!--[!--><!--]--></svg><!----></div> <div class="flex flex-wrap gap-2 pt-4"><button class="btn btn-xs">Demo responsiveness</button> <button class="btn btn-xs">Start updating</button> <button class="btn btn-xs">A tiny bit faster --thanks</button> <button class="btn btn-xs">Random color</button></div> <div class="pl-10 pt-4 text-lg">Binding: <!--[!--><!--]--></div></div> <div class="w-[40%]"><div class="text-xs"><pre>&lt;div class="flex w-full flex-row p-4">
+    &lt;!-- Sparkline -->
+    &lt;div class="w-[30%]">
+        &lt;div style:height style:width>
+            &lt;Sparkline
+                {data}
+                options={{
+                    interactive: true,
+                    showTooltip: true,
+                    lineColor: color,
+                }}
+                bind:cursorData={cursorInfo}
+            />
+        &lt;/div>
+
+        &lt;div class="flex flex-wrap gap-2 pt-4">
+            &lt;button
+                class="btn btn-xs"
+                onclick={() => (demoResponsiveness = true)}
+                >Demo responsiveness&lt;/button
+            >
+
+            &lt;button class="btn btn-xs" onclick={() => (period = 2000)}
+                >Start updating&lt;/button
+            >
+            &lt;button class="btn btn-xs" onclick={() => (period = 10)}
+                >A tiny bit faster --thanks&lt;/button
+            >
+
+            &lt;button class="btn btn-xs" onclick={() => (color = randomColor())}
+                >Random color&lt;/button
+            >
+        &lt;/div>
+
+        &lt;div class="pl-10 pt-4 text-lg">
+            Binding:
+            {#if cursorInfo}
+                &lt;p>
+                    {cursorInfo?.label}: {cursorInfo?.value}
+                &lt;/p>
+            {/if}
+        &lt;/div>
+    &lt;/div>
+
+    &lt;div class="w-[40%]">
+        &lt;div class="text-xs">
+            &lt;pre>{code}&lt;/pre>
+        &lt;/div>
+    &lt;/div>
+&lt;/div>
+
+&lt;script lang="ts">
+    import Sparkline from "$lib/Sparkline.svelte";
+    import type { DataPoint } from "$lib/Sparkline.svelte";
+    import code from "./+page.svelte?raw";
+
+    let color = $state(randomColor());
+
+    let height = $state("8em");
+    let width = $state("25em");
+
+    let demoResponsiveness = $state(false);
+
+    let cursorInfo: DataPoint | null = $state(null);
+
+    function randomColor() {
+        return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    }
+
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    let monthIndex = 10;
+
+    let data = $state(
+        months.slice(0, 10).map((month) => ({
+            label: month,
+            value: Math.floor(Math.random() * 1000),
+        })),
+    );
+
+    let period = $state(1000000);
+
+    $effect(() => {
+        const interval = setInterval(() => {
+            const month = months[monthIndex % months.length];
+            monthIndex++;
+
+            data.push({
+                label: month,
+                value: Math.floor(Math.random() * 100),
+            });
+            data.shift();
+        }, period);
+
+        return () => clearInterval(interval);
+    });
+
+    $effect(() => {
+        if (demoResponsiveness) {
+            height = "2em";
+            width = "7.5em";
+        }
+    });
+&lt;/script>
+</pre></div></div></div><!----><!----><!----><!--]--> <!--[!--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_8g5kjb = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.DOS4H5KY.js"),
+						import("./_app/immutable/entry/app.BeXYSgLZ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>

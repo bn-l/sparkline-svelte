@@ -27,7 +27,6 @@ lerna-debug.log*
 .svelte-kit/
 .output
 .vercel
-build/
 
 # Vite
 vite.config.js.timestamp-*
@@ -36,5 +35,8 @@ vite.config.ts.timestamp-*
 # OS
 .DS_Store
 Thumbs.db
+
+dist/
+.vscode/
 
 
