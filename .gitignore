@@ -28,7 +28,6 @@ lerna-debug.log*
 .output
 .vercel
 build/
-dist/
 
 # Vite
 vite.config.js.timestamp-*
