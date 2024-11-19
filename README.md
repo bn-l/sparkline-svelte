@@ -1,3 +1,8 @@
+
+
+https://github.com/user-attachments/assets/22a4b3d6-2ca6-4a16-95b4-63f45d29dd51
+
+
 # Sparkline
 
 A lightweight and customizable Sparkline component for Svelte 5, based on [fnando/sparkline](https://github.com/fnando/sparkline) (used on npm to show a chart for weekly downloads), with various improvements and updates. Works on touch screens also.
