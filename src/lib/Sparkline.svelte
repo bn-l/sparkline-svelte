@@ -1,11 +1,12 @@
 <svg
     class={dOptions?.svgClass}
-    width="100%"
-    height="100%"
+    width={dOptions?.svgWidth}
+    height={dOptions?.svgHeight}
     viewBox="0 0 {actualWidth} {actualHeight}"
     preserveAspectRatio="none"
     stroke-width={dOptions?.strokeWidth}
     aria-hidden="true"
+    role="img"
     bind:clientWidth={actualWidth}
     bind:clientHeight={actualHeight}
     bind:this={svgEl}
@@ -17,12 +18,14 @@
 >
     <!-- Fill -->
     <path
+        id="sparkline-fill-path"
         style="fill: {fillColor}; d: path('{fillCoords}');"
         stroke={fillColor}
     />
 
     <!-- Graph Line -->
     <path
+        id="sparkline-line-path"
         style="stroke: {lineColor}; d: path('{lineCoords}');"
         fill="none"
         stroke-linecap="square"
@@ -31,6 +34,7 @@
     {#if interactive && !mouseOut}
         <!-- Cursor -->
         <line
+            id="sparkline-cursor-line"
             style="stroke: {cursorColor};"
             x1={spotX}
             x2={spotX}
@@ -41,12 +45,14 @@
         <!-- Tooltip -->
         {#if dOptions?.showTooltip}
             <foreignObject
+                id="sparkline-tooltip-foreign-object"
                 x={tooltipRectX}
                 y={tooltipRectY}
                 width={tooltipBorderBoxSize?.[0]?.inlineSize ?? 0}
                 height={tooltipBorderBoxSize?.[0]?.blockSize ?? 0}
             >
                 <div
+                    id="sparkline-tooltip-text"
                     class={dOptions?.toolTipClass ?? "tooltip-class"}
                     style="width: max-content; height: max-content; display: inline-flex; background-color: {tooltipFillColor}; color: {tooltipTextColor}; user-select: none; font-size: {dOptions?.tooltipFontSize}; border: 0rem solid {lineColor}; max-width: {actualWidth}px;"
                     bind:borderBoxSize={tooltipBorderBoxSize}
@@ -90,6 +96,8 @@
 
     export interface Options {
         fetch?: (entry: any) => number;
+        svgHeight?: string;
+        svgWidth?: string;
         spotRadius?: number;
         cursorWidth?: number;
         interactive?: boolean;
@@ -124,6 +132,8 @@
     }: Props & { cursorData?: DataPoint | null } = $props();
 
     const defaultOptions: Partial<Options> = {
+        svgWidth: "100%",
+        svgHeight: "100%",
         strokeWidth: 6,
         spotRadius: 2,
         tooltipFontSize: "0.875rem",
