@@ -1,6 +1,6 @@
 # Sparkline
 
-A lightweight and customizable Sparkline component for Svelte 5, based on [fnando/sparkline](https://github.com/fnando/sparkline), with various improvements and updates.
+A lightweight and customizable Sparkline component for Svelte 5, based on [fnando/sparkline](https://github.com/fnando/sparkline) (used on npm to show a chart for weekly downloads), with various improvements and updates. Works on touch screens also.
 
 This library creates a small responsive graph (a sparkline) without axis labels for data visualization. It is ideal for displaying trends and patterns in data in a compact form--making it good for use in dashboards, reports, etc. The SVG output scales to fit its container for responsiveness on different screen sizes.
 
@@ -79,7 +79,6 @@ is needed to change all the colors automatically. The other options can be mostl
     - **Default**: `true`
     - **Description**: Shows tooltip with data point information on hover.
 
-
 - `tooltipTextColor`
     
     - **Type**: `string`
@@ -111,18 +110,45 @@ is needed to change all the colors automatically. The other options can be mostl
     - **Default**: `"tooltip-class"`
     - **Description**: CSS class to apply to the tooltip element.
 
+### `cursorData` (optional, bindable)
+- **Type**: `DataPoint | null`
+- **Description**: A **bindable** prop that holds the current data point under the cursor when the sparkline is interactive. It can be used to access the data point's `x`, `y`, `value`, `index`, and `label` properties.
 
-For example:
+#### DataPoint:
 
-```svelte
-<Sparkline {data} options={{ lineColor: "#3498db" }} />
+```typescript
+interface DataPoint {     
+    x: number;     
+    y: number;     
+    value: number;     
+    index: number;     
+    label?: string; 
+}
 ```
 
-This will set the sparkline line to a blue color (`#3498db`), and the component will automatically adjust the fill, cursor, and tooltip colors based on this color.
+You can bind to `cursorData` to get the current data point under the cursor:
+
+```svelte
+<script>     
+    import Sparkline from "sparkline-svelte";     
+    let data = [5, 10, 15, 10, 5];     
+    let cursorData = $state(null); 
+</script>  
+
+<Sparkline {data} options={{ interactive: true }} bind:cursorData />  
+
+{#if cursorData}     
+    <p>Current Value: {cursorData.value}</p>     
+    <p>Index: {cursorData.index}</p>     
+    <p>X: {cursorData.x}</p>     
+    <p>Y: {cursorData.y}</p>     
+    {#if cursorData.label}         
+        <p>Label: {cursorData.label}</p>     
+    {/if} 
+{/if}
+```
 
 ## Examples
-
-### Static Data Example
 
 ```svelte
 <script>     
@@ -141,7 +167,7 @@ This will set the sparkline line to a blue color (`#3498db`), and the component 
 
 In this example, by supplying a `label` for each data point, the tooltip will display the label and value as `label: ${value}` when hovering over the sparkline.
 
-### Reactive Data Updates
+#### Reactive Data Updates
 
 ```svelte
 <script>     

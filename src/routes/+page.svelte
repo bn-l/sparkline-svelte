@@ -8,8 +8,8 @@
                     interactive: true,
                     showTooltip: true,
                     lineColor: color,
-                    strokeWidth: 8,
                 }}
+                bind:cursorData={cursorInfo}
             />
         </div>
 
@@ -24,12 +24,21 @@
                 >Start updating</button
             >
             <button class="btn btn-xs" onclick={() => (period = 10)}
-                >Slightly faster mate</button
+                >A tiny bit faster --thanks</button
             >
 
             <button class="btn btn-xs" onclick={() => (color = randomColor())}
                 >Random color</button
             >
+        </div>
+
+        <div class="pl-10 pt-4 text-lg">
+            Binding:
+            {#if cursorInfo}
+                <p>
+                    {cursorInfo?.label}: {cursorInfo?.value}
+                </p>
+            {/if}
         </div>
     </div>
 
@@ -42,6 +51,7 @@
 
 <script lang="ts">
     import Sparkline from "$lib/Sparkline.svelte";
+    import type { DataPoint } from "$lib/Sparkline.svelte";
     import code from "./+page.svelte?raw";
 
     let color = $state(randomColor());
@@ -50,6 +60,8 @@
     let width = $state("25em");
 
     let demoResponsiveness = $state(false);
+
+    let cursorInfo: DataPoint | null = $state(null);
 
     function randomColor() {
         return `#${Math.floor(Math.random() * 16777215).toString(16)}`;

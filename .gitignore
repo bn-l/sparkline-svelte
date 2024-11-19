@@ -27,8 +27,8 @@ lerna-debug.log*
 .svelte-kit/
 .output
 .vercel
-/build
-
+build/
+dist/
 
 # Vite
 vite.config.js.timestamp-*

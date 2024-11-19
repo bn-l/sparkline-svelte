@@ -36,7 +36,7 @@
             x2={spotX}
             y1="0"
             y2={actualHeight}
-            stroke-width={dOptions.cursorWidth ?? 2}
+            stroke-width={dOptions.cursorWidth}
         />
         <!-- Tooltip -->
         {#if dOptions?.showTooltip}
@@ -48,10 +48,12 @@
             >
                 <div
                     class={dOptions?.toolTipClass ?? "tooltip-class"}
-                    style="width: max-content; height: max-content; display: inline-flex; background-color: {tooltipFillColor}; color: {tooltipTextColor}; user-select: none; font-size: {dOptions?.tooltipFontSize}; border: 0.1rem solid {lineColor}; max-width: {actualWidth}px;"
+                    style="width: max-content; height: max-content; display: inline-flex; background-color: {tooltipFillColor}; color: {tooltipTextColor}; user-select: none; font-size: {dOptions?.tooltipFontSize}; border: 0rem solid {lineColor}; max-width: {actualWidth}px;"
                     bind:borderBoxSize={tooltipBorderBoxSize}
                 >
-                    {currentDataPoint?.label}
+                    {currentDataPoint?.label
+                        ? `${currentDataPoint?.label}: ${currentDataPoint.value}`
+                        : `${currentDataPoint?.value}`}
                 </div>
             </foreignObject>
         {/if}
@@ -75,12 +77,10 @@
     }
 </style>
 
-<script lang="ts">
-    import { colord, type Colord } from "colord";
+<script module lang="ts">
+    export type Datum = number | { label: string; value: number };
 
-    type Datum = number | { label: string; value: number };
-
-    interface DataPoint {
+    export interface DataPoint {
         x: number;
         y: number;
         value: number;
@@ -88,7 +88,7 @@
         label?: string; // Make label optional
     }
 
-    interface Options {
+    export interface Options {
         fetch?: (entry: any) => number;
         spotRadius?: number;
         cursorWidth?: number;
@@ -106,20 +106,29 @@
         toolTipClass?: string;
     }
 
-    interface Props {
+    export interface Props {
         data: Datum[];
         options?: Options;
     }
+</script>
+
+<script lang="ts">
+    import { colord, type Colord } from "colord";
 
     //  ------------------ SET UP ------------------
 
-    let { data, options }: Props = $props();
+    let {
+        data,
+        options,
+        cursorData = $bindable(null),
+    }: Props & { cursorData?: DataPoint | null } = $props();
 
     const defaultOptions: Partial<Options> = {
         strokeWidth: 6,
         spotRadius: 2,
         tooltipFontSize: "0.875rem",
         showTooltip: true,
+        cursorWidth: 3,
     };
     let dOptions = $derived({ ...defaultOptions, ...options });
 
@@ -137,9 +146,9 @@
         ? colord(dOptions.lineColor)
         : colord("#FF476F");
         const fillColor = dOptions?.fillColor ?? getColor(lineColord, 0.2, false).toHex();
-        const cursorColor = dOptions?.cursorColor ?? getColor(lineColord, 0.4, true).toHex();
+        const cursorColor = dOptions?.cursorColor ?? getColor(lineColord, 0.1, true).toHex();
         const tooltipFillColor =
-            dOptions?.tooltipFillColor ?? getColor(fillColor, 0.15, true).toHex();
+            dOptions?.tooltipFillColor ?? getColor(fillColor, 0.1, false).toHex();
         const tooltipTextColor =
             dOptions?.tooltipTextColor ?? getColor(tooltipFillColor, 0.6, true).toHex();
         const lineColor = lineColord.toHex();
@@ -173,9 +182,7 @@
         return data.map((entry, index) => {
             const value = typeof entry === "number" ? entry : entry.value;
             const label =
-                typeof entry === "number"
-                    ? String(entry)
-                    : `${entry.label}: ${entry.value}`;
+                typeof entry === "number" ? String(entry) : entry.label;
 
             let x = (index / (data.length - 1)) * width + spotDiameter;
             let y =
@@ -279,6 +286,14 @@
         }
 
         return [tooltipRectX, tooltipRectY];
+    });
+
+    $effect(() => {
+        if (currentDataPoint !== null) {
+            cursorData = currentDataPoint;
+        } else {
+            cursorData = null;
+        }
     });
 
     function onMouseMove(event: MouseEvent) {
