@@ -1,7 +1,9 @@
 
 
-https://github.com/user-attachments/assets/22a4b3d6-2ca6-4a16-95b4-63f45d29dd51
 
+<!-- https://github.com/user-attachments/assets/22a4b3d6-2ca6-4a16-95b4-63f45d29dd51 -->
+
+Demo: https://bn-l.github.io/sparkline-svelte/
 
 # Sparkline
 
