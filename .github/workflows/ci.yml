@@ -77,6 +77,7 @@ jobs:
             # - name: Install Playwright Browsers
             #   run: npx playwright install chromium
 
+            # ------ UBUNTU ------
             # Use xvfb-run only on Ubuntu
             - name: Playwright chromium tests
               if: matrix.os == 'ubuntu-latest'
@@ -87,23 +88,29 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: xvfb-run npm run test:firefox
 
-            # Use xvfb-run only on Ubuntu
-            - name: Playwright webkit tests
-              if: matrix.os == 'ubuntu-latest'
-              run: xvfb-run npm run test:webkit
 
+            # ------ MACOS ------
             # Regular run for other OS
             - name: Playwright chromium tests
-              if: matrix.os != 'ubuntu-latest'
+              if: matrix.os == 'macos-latest'
               run: npm run test:chromium
 
             - name: Playwright firefox tests
-              if: matrix.os != 'ubuntu-latest'
+              if: matrix.os == 'macos-latest'
               run: npm run test:firefox
 
             - name: Playwright webkit tests
-              if: matrix.os != 'ubuntu-latest'
+              if: matrix.os == 'macos-latest'
               run: npm run test:webkit
+
+            # ------ WINDOWS ------
+            - name: Playwright chromium tests
+              if: matrix.os == 'windows-latest'
+              run: npm run test:chromium
+
+            - name: Playwright firefox tests
+              if: matrix.os == 'windows-latest'
+              run: npm run test:firefox
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}

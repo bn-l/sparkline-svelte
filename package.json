@@ -9,6 +9,8 @@
     "preview:host": "vite preview --host",
     "package": "svelte-kit sync && svelte-package && publint",
     "prepublishOnly": "npm run package",
+    "bumpp": "npx bumpp",
+    "publish-ci": "tsx scripts/publish-ci.ts",
     "check": "svelte-kit sync && svelte-check --workspace ./src/lib --no-tsconfig",
     "check:watch": "svelte-kit sync && svelte-check --workspace ./src/lib --watch --no-tsconfig",
     "format": "prettier --write .",
@@ -45,6 +47,7 @@
     "@antfu/eslint-config": "^3.9.1",
     "@playwright/test": "^1.45.3",
     "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/adapter-static": "^3.0.6",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/package": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.1",
@@ -79,7 +82,7 @@
     "vite": "^5.0.11",
     "vitest": "^2.1.5",
     "vitest-browser-svelte": "^0.0.1",
-    "@sveltejs/adapter-static": "^3.0.6"
+    "zx": "^8.2.2"
   },
   "overrides": {
     "svelte-eslint-parser": "^0.43.0"
