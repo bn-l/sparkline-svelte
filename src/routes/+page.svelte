@@ -1,7 +1,7 @@
-<div class="flex w-full flex-row p-4">
+<div class="flex w-full flex-row flex-wrap p-6">
     <!-- Sparkline -->
-    <div class="w-[30%]">
-        <div style:height style:width>
+    <div class="flex-grow-[0.1] pb-4">
+        <div class="max-w-[85vw]" style:height style:width>
             <Sparkline
                 {data}
                 options={{
@@ -32,7 +32,7 @@
             >
         </div>
 
-        <div class="pl-10 pt-4 text-lg">
+        <div class="mb-10 h-4 text-lg">
             Binding:
             {#if cursorInfo}
                 <p>
@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <div class="w-[40%]">
+    <div class="flex-grow-[0.7] pt-1">
         <div class="text-xs">
             <pre>{code}</pre>
         </div>

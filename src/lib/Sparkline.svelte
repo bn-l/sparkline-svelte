@@ -20,14 +20,16 @@
     <!-- Fill -->
     <path
         id="sparkline-fill-path"
-        style="fill: {fillColor}; d: path('{fillCoords}');"
+        style="fill: {fillColor};"
+        d={fillCoords}
         stroke={fillColor}
     />
 
     <!-- Graph Line -->
     <path
         id="sparkline-line-path"
-        style="stroke: {lineColor}; d: path('{lineCoords}');"
+        style="stroke: {lineColor};"
+        d={lineCoords}
         fill="none"
         stroke-linecap="square"
     />
@@ -54,8 +56,9 @@
             >
                 <div
                     id="sparkline-tooltip-text"
-                    class={dOptions?.toolTipClass ?? "tooltip-class"}
-                    style="width: max-content; height: max-content; display: inline-flex; background-color: {tooltipFillColor}; color: {tooltipTextColor}; user-select: none; font-size: {dOptions?.tooltipFontSize}; border: 0rem solid {lineColor}; max-width: {actualWidth}px;"
+                    class="{dOptions?.toolTipClass ??
+                        'tooltip-class'} tooltip-defaults"
+                    style=" background-color: {tooltipFillColor}; color: {tooltipTextColor};  font-size: {dOptions?.tooltipFontSize}; border: 0rem solid {lineColor}; max-width: {actualWidth}px;"
                     bind:borderBoxSize={tooltipBorderBoxSize}
                 >
                     {currentDataPoint?.label
@@ -76,6 +79,28 @@
         font-weight: 600;
         text-align: center;
         font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Used for defaults */
+    #sparkline-tooltip-text {
+        width: max-content;
+        height: max-content;
+        display: inline-flex;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    #sparkline-svg {
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
     }
 
     path {

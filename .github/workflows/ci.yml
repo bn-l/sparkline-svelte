@@ -65,8 +65,14 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Install Playwright
-              run: npm install playwright
+            - name: Install playwright chromium
+              run: npm install playwright-chromium
+
+            - name: Install playwright firefox
+              run: npm install playwright-firefox
+
+            - name: Install playwright webkit
+              run: npm install playwright-webkit
 
             # - name: Install Playwright Browsers
             #   run: npx playwright install chromium

@@ -5,23 +5,23 @@
 		<link rel="icon" href="./favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
-		<link href="./_app/immutable/assets/0.CvrAbse_.css" rel="stylesheet">
-		<link href="./_app/immutable/assets/2.CXm0iPQG.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.Bf7e4WjS.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/entry.CFaxD6RH.js">
+		<link href="./_app/immutable/assets/0.CsK9UuJm.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/2.Ctrn-E3w.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.CbsUnGsi.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/entry.CkUWzlkp.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/runtime.Cg5oSnlZ.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.CYgMwzmE.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.CJ9M3_fp.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/store.DeU8N9Gq.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/disclose-version.Ch3PDx1e.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/props.D0SBms_E.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/0.D87RpRNr.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/2.Cu7T797V.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.Ezpt3Wdp.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.AChjoJqM.js">
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div><!--[--><!--[--><!----><!----><div class="flex w-full flex-row p-4"><div class="w-[30%]"><div style="height: 8em; width: 25em;"><svg id="sparkline-svg" class=" svelte-1h3d8ne" width="100%" height="100%" viewBox="0 0 0 0" preserveAspectRatio="none" stroke-width="6" aria-hidden="true" role="img" style="fill: none; touch-action: none;"><path id="sparkline-fill-path" style="fill: #000000; d: path('');" stroke="#000000" class="svelte-1h3d8ne"></path><path id="sparkline-line-path" style="stroke: #000000; d: path('');" fill="none" stroke-linecap="square" class="svelte-1h3d8ne"></path><!--[!--><!--]--></svg><!----></div> <div class="flex flex-wrap gap-2 pt-4"><button class="btn btn-xs">Demo responsiveness</button> <button class="btn btn-xs">Start updating</button> <button class="btn btn-xs">A tiny bit faster --thanks</button> <button class="btn btn-xs">Random color</button></div> <div class="pl-10 pt-4 text-lg">Binding: <!--[!--><!--]--></div></div> <div class="w-[40%]"><div class="text-xs"><pre>&lt;div class="flex w-full flex-row p-4">
+		<div><!--[--><!--[--><!----><!----><div class="flex w-full flex-row flex-wrap p-6"><div class="flex-grow-[0.1] pb-4"><div style="height: 8em; width: 25em;" class="max-w-[85vw]"><svg id="sparkline-svg" class=" svelte-1bfcxmz" width="100%" height="100%" viewBox="0 0 0 0" preserveAspectRatio="none" stroke-width="6" aria-hidden="true" role="img" style="fill: none; touch-action: none;"><path id="sparkline-fill-path" style="fill: #edfde4;" d="" stroke="#edfde4" class="svelte-1bfcxmz"></path><path id="sparkline-line-path" style="stroke: #aff586;" d="" fill="none" stroke-linecap="square" class="svelte-1bfcxmz"></path><!--[!--><!--]--></svg><!----></div> <div class="flex flex-wrap gap-2 pt-4"><button class="btn btn-xs">Demo responsiveness</button> <button class="btn btn-xs">Start updating</button> <button class="btn btn-xs">A tiny bit faster --thanks</button> <button class="btn btn-xs">Random color</button></div> <div class="mb-10 h-4 text-lg">Binding: <!--[!--><!--]--></div></div> <div class="flex-grow-[0.7] pt-1"><div class="text-xs"><pre>&lt;div class="flex w-full flex-row flex-wrap p-6">
     &lt;!-- Sparkline -->
-    &lt;div class="w-[30%]">
-        &lt;div style:height style:width>
+    &lt;div class="flex-grow-[0.1] pb-4">
+        &lt;div class="max-w-[85vw]" style:height style:width>
             &lt;Sparkline
                 {data}
                 options={{
@@ -52,7 +52,7 @@
             >
         &lt;/div>
 
-        &lt;div class="pl-10 pt-4 text-lg">
+        &lt;div class="mb-10 h-4 text-lg">
             Binding:
             {#if cursorInfo}
                 &lt;p>
@@ -62,7 +62,7 @@
         &lt;/div>
     &lt;/div>
 
-    &lt;div class="w-[40%]">
+    &lt;div class="flex-grow-[0.7] pt-1">
         &lt;div class="text-xs">
             &lt;pre>{code}&lt;/pre>
         &lt;/div>
@@ -139,7 +139,7 @@
 			
 			<script>
 				{
-					__sveltekit_1la6mvr = {
+					__sveltekit_n5hm41 = {
 						base: new URL(".", location).pathname.slice(0, -1)
 					};
 
@@ -148,8 +148,8 @@
 					const data = [null,null];
 
 					Promise.all([
-						import("./_app/immutable/entry/start.Bf7e4WjS.js"),
-						import("./_app/immutable/entry/app.CYgMwzmE.js")
+						import("./_app/immutable/entry/start.CbsUnGsi.js"),
+						import("./_app/immutable/entry/app.CJ9M3_fp.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 2],
