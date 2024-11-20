@@ -78,15 +78,33 @@ jobs:
             #   run: npx playwright install chromium
 
             # Use xvfb-run only on Ubuntu
-            - name: Playwright tests
+            - name: Playwright chromium tests
               if: matrix.os == 'ubuntu-latest'
-              run: xvfb-run npm test
+              run: xvfb-run npm test:chromium
+
+            # Use xvfb-run only on Ubuntu
+            - name: Playwright firefox tests
+              if: matrix.os == 'ubuntu-latest'
+              run: xvfb-run npm test:firefox
+
+            # Use xvfb-run only on Ubuntu
+            - name: Playwright webkit tests
+              if: matrix.os == 'ubuntu-latest'
+              run: xvfb-run npm test:webkit
 
             # Regular run for other OS
-            - name: Playwright tests
+            - name: Playwright chromium tests
               if: matrix.os != 'ubuntu-latest'
-              run: npm test
-              
+              run: npm test:chromium
+
+            - name: Playwright firefox tests
+              if: matrix.os != 'ubuntu-latest'
+              run: npm test:firefox
+
+            - name: Playwright webkit tests
+              if: matrix.os != 'ubuntu-latest'
+              run: npm test:webkit
+
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
               with:
