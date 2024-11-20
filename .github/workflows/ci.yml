@@ -49,7 +49,13 @@ jobs:
 
     test:
         timeout-minutes: 60
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
+        
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest, windows-latest, windows-2019]
+            fail-fast: false  # Continue running other OS tests even if one fails
+            
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
@@ -65,15 +71,23 @@ jobs:
             - name: Install Playwright Browsers
               run: npx playwright install chromium
 
+            # Use xvfb-run only on Ubuntu
             - name: Playwright tests
+              if: matrix.os == 'ubuntu-latest'
               run: xvfb-run npm test
 
+            # Regular run for other OS
+            - name: Playwright tests
+              if: matrix.os != 'ubuntu-latest'
+              run: npm test
+              
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
               with:
-                  name: playwright-report
+                  name: playwright-report-${{ matrix.os }}
                   path: playwright-report/
                   retention-days: 30
+                  
 #   test:
 #     runs-on: ${{ matrix.os }}
 
