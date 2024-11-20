@@ -39,7 +39,7 @@ Thumbs.db
 dist/
 .vscode/
 
-# svelte-5-docs-MG.md
-# svelte-testing-vitest-api-docs.md
-# svelte-testing-vitest-no-test-lib.md
+svelte-5-docs-MG.md
+svelte-testing-vitest-api-docs.md
+svelte-testing-vitest-no-test-lib.md
 __screenshots__/
