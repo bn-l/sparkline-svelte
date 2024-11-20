@@ -8,7 +8,7 @@ Demo: https://bn-l.github.io/sparkline-svelte/
 
 # Sparkline
 
-A lightweight and customizable Sparkline component for Svelte 5, based on [fnando/sparkline](https://github.com/fnando/sparkline) (used on npm to show a chart for weekly downloads), with various improvements and updates. Works on touch screens also.
+A lightweight and customizable Sparkline component for Svelte 5, based on [fnando/sparkline](https://github.com/fnando/sparkline) (used on npm to show a chart for weekly downloads), with various improvements and updates. Works on touchscreens, [tested](./tests/Sparkline.svelte.test.ts) on all browsers.
 
 This library creates a small responsive line chart (apparently called "sparkline" for whatever reason)--without axis labels--for quick data visualization. It is ideal for displaying trends and patterns in data in a compact form--making it good for use in dashboards, reports, etc. The SVG output scales to fit its container for responsiveness on different screen sizes. 
 
