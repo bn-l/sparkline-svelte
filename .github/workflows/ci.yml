@@ -80,12 +80,12 @@ jobs:
             # Use xvfb-run only on Ubuntu
             - name: Playwright chromium tests
               if: matrix.os == 'ubuntu-latest'
-              run: xvfb-run npm test:chromium
+              run: xvfb-run npm run test:chromium
 
             # Use xvfb-run only on Ubuntu
             - name: Playwright firefox tests
               if: matrix.os == 'ubuntu-latest'
-              run: xvfb-run npm test:firefox
+              run: xvfb-run npm run test:firefox
 
             # Use xvfb-run only on Ubuntu
             - name: Playwright webkit tests
