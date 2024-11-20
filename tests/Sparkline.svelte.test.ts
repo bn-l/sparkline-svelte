@@ -1,3 +1,4 @@
+/// <reference types="@vitest/browser/providers/playwright" />
 /* eslint-disable prefer-const */
 import { flushSync } from "svelte";
 import { describe, expect, test } from "vitest";
@@ -272,18 +273,12 @@ describe("Sparkline", () => {
             );
 
             // Line should start at bottom left and end at top right
-            expect(linePath).toHaveAttribute(
-                "style",
-                expect.stringContaining("d: path('M 4 92 L 50 50 L 96 8')"),
-            );
+            expect(linePath).toHaveAttribute("d", "M 4 92 L 50 50 L 96 8");
 
             // Fill should follow the same line but close the path at the bottom
-            // Note: Fill path is offset by 3px (half the stroke width) to align with the line stroke
             expect(fillPath).toHaveAttribute(
-                "style",
-                expect.stringContaining(
-                    "d: path('M 4 95 L 50 53 L 96 11 V 100 L 4 100 Z')",
-                ),
+                "d",
+                "M 4 95 L 50 53 L 96 11 V 100 L 4 100 Z",
             );
         });
 
@@ -309,10 +304,7 @@ describe("Sparkline", () => {
             );
 
             // Initial positions
-            expect(linePath).toHaveAttribute(
-                "style",
-                expect.stringContaining("d: path('M 4 92 L 50 50 L 96 8')"),
-            );
+            expect(linePath).toHaveAttribute("d", "M 4 92 L 50 50 L 96 8");
 
             // Change data
             data[0] = 100;
@@ -321,17 +313,12 @@ describe("Sparkline", () => {
             await new Promise((resolve) => setTimeout(resolve, 100));
 
             // Line should now go from top left to bottom right
-            expect(linePath).toHaveAttribute(
-                "style",
-                expect.stringContaining("d: path('M 4 8 L 50 50 L 96 92')"),
-            );
+            expect(linePath).toHaveAttribute("d", "M 4 8 L 50 50 L 96 92");
 
-            // Fill should follow the updated line with the stroke width offset
+            // Fill should follow the updated line
             expect(fillPath).toHaveAttribute(
-                "style",
-                expect.stringContaining(
-                    "d: path('M 4 11 L 50 53 L 96 95 V 100 L 4 100 Z')",
-                ),
+                "d",
+                "M 4 11 L 50 53 L 96 95 V 100 L 4 100 Z",
             );
         });
 
@@ -353,17 +340,12 @@ describe("Sparkline", () => {
             );
 
             // Line should be horizontal in the middle
-            expect(linePath).toHaveAttribute(
-                "style",
-                expect.stringContaining("d: path('M 4 8 L 50 8 L 96 8')"),
-            );
+            expect(linePath).toHaveAttribute("d", "M 4 8 L 50 8 L 96 8");
 
-            // Fill should create a rectangle with the stroke width offset
+            // Fill should create a rectangle
             expect(fillPath).toHaveAttribute(
-                "style",
-                expect.stringContaining(
-                    "d: path('M 4 11 L 50 11 L 96 11 V 100 L 4 100 Z')",
-                ),
+                "d",
+                "M 4 11 L 50 11 L 96 11 V 100 L 4 100 Z",
             );
         });
     });

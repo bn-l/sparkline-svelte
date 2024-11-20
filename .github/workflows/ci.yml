@@ -1,79 +1,93 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
-  pull_request:
-    branches:
-      - main
+    pull_request:
+        branches:
+            - main
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
+    group: ci-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
 
 jobs:
+    # ! uncomment when finished setting up
+    # check-workflow-files:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #   # See: https://github.com/dorny/paths-filter
+    #   #  quite useful, can be used to trigger certain tests
+    #   #  only when certain files change.
+    #     - uses: actions/checkout@v4
+    #     - uses: dorny/paths-filter@v3
+    #       id: changes
+    #       with:
+    #         filters: |
+    #           workflow:
+    #             - '.github/workflows/**'
+    #     - name: Fail if workflow files are changed
+    #       run: exit 1
+    #       if: steps.changes.outputs.workflow == 'true'
 
-  # ! uncomment when finished setting up
-  # check-workflow-files:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   # See: https://github.com/dorny/paths-filter
-  #   #  quite useful, can be used to trigger certain tests 
-  #   #  only when certain files change.
-  #     - uses: actions/checkout@v4
-  #     - uses: dorny/paths-filter@v3
-  #       id: changes
-  #       with:
-  #         filters: |
-  #           workflow:
-  #             - '.github/workflows/**'
-  #     - name: Fail if workflow files are changed
-  #       run: exit 1
-  #       if: steps.changes.outputs.workflow == 'true'
+    sveltecheck:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: "npm"
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'npm'
+            - name: Install
+              run: npm ci
 
-      - name: Install
-        run: npm ci
+            - name: Check
+              run: npm run check
 
-      # - name: Lint 
-      #   run: npm run lint
-
-
-  test:
-    runs-on: ${{ matrix.os }}
-
-    timeout-minutes: 30
-
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
-          - windows-2019
-      fail-fast: false
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: Install
-        run: npm ci
+    test:
+        timeout-minutes: 60
+        runs-on: ${{ matrix.os }}
         
-      - name: Browser Tests
-        run: npm run test
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest, windows-latest, windows-2019]
+                browser: [chromium, firefox]
+                include:
+                    - os: macos-latest
+                      browser: webkit
+            fail-fast: false
+            
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - name: Install dependencies
+              run: npm ci
+
+            # Install browsers conditionally based on OS
+            - name: Install Playwright browsers (macOS)
+              if: matrix.os == 'macos-latest'
+              run: |
+                npm install playwright-chromium
+                npm install playwright-firefox
+                npm install playwright-webkit
+
+            - name: Install Playwright browsers (Windows/Ubuntu)
+              if: matrix.os == 'windows-latest' || matrix.os == 'windows-2019' || matrix.os == 'ubuntu-latest'
+              run: |
+                npm install playwright-chromium
+                npm install playwright-firefox
+
+            # Single test command with matrix
+            - name: Run Playwright tests
+              uses: nick-fields/retry@v3
+              with:
+                timeout_minutes: 10
+                max_attempts: 3
+                command: ${{ matrix.os == 'ubuntu-latest' && 'xvfb-run ' || '' }}npm run test:${{ matrix.browser }}
 
