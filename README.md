@@ -2,7 +2,7 @@
 
 <!-- https://github.com/user-attachments/assets/22a4b3d6-2ca6-4a16-95b4-63f45d29dd51 -->
 
-![demo-animated-gif|200](demo.webp)
+<img src="demo.webp" alt="demo-animated-gif" width="732" >
 
 Demo: https://bn-l.github.io/sparkline-svelte/
 
