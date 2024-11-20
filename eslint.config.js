@@ -60,6 +60,9 @@ export default antfu(
             "unicorn/no-object-as-default-parameter": "error",
             "ts/consistent-type-definitions": "off",
             "ts/strict-boolean-expressions": "off",
+            "test/consistent-test-it": "off",
+            "test/prefer-lowercase-title": "off",
+            "antfu/consistent-chaining": "off",
         },
     },
 );

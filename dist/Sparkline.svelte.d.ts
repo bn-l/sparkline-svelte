@@ -11,6 +11,8 @@ export interface DataPoint {
 }
 export interface Options {
     fetch?: (entry: any) => number;
+    svgHeight?: string;
+    svgWidth?: string;
     spotRadius?: number;
     cursorWidth?: number;
     interactive?: boolean;

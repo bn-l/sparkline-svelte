@@ -1,4 +1,5 @@
 <svg
+    id="sparkline-svg"
     class={dOptions?.svgClass}
     width={dOptions?.svgWidth}
     height={dOptions?.svgHeight}
@@ -74,6 +75,7 @@
         border-radius: 0.5rem;
         font-weight: 600;
         text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     path {
@@ -91,7 +93,7 @@
         y: number;
         value: number;
         index: number;
-        label?: string; // Make label optional
+        label?: string;
     }
 
     export interface Options {
@@ -150,6 +152,8 @@
             : base.lighten(changeAmount);
     }
 
+    // ------ COLOR SETUP ------
+
     // prettier-ignore
     const { lineColor, fillColor, cursorColor, tooltipFillColor, tooltipTextColor } = $derived.by(() => {
         const lineColord = dOptions?.lineColor
@@ -191,8 +195,7 @@
 
         return data.map((entry, index) => {
             const value = typeof entry === "number" ? entry : entry.value;
-            const label =
-                typeof entry === "number" ? String(entry) : entry.label;
+            const label = typeof entry === "number" ? undefined : entry.label;
 
             let x = (index / (data.length - 1)) * width + spotDiameter;
             let y =

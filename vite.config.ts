@@ -4,10 +4,16 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     plugins: [sveltekit(), svelteTesting()],
-
     test: {
-        include: ["src/**/*.{test,spec}.{js,ts}"],
-        environment: "jsdom",
-        setupFiles: ["./vitest-setup.js"],
+        include: ["tests/**/*.{test,spec}.{js,ts}"],
+        setupFiles: ["vitest-browser-svelte"],
+        testTimeout: 10000,
+        browser: {
+            enabled: true,
+            name: "chromium",
+            provider: "playwright",
+            // https://playwright.dev
+            headless: false,
+        },
     },
 });
