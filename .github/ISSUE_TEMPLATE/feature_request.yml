@@ -1,0 +1,23 @@
+name: 🚀 New feature proposal
+description: Propose a new feature
+labels: ['enhancement: pending triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        What feature would you like to see?
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Clear and concise description of the feature
+      description: (just an example) I need to ____ because I'm ____ and therefore it would be good if this had a way to do ____.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Checks
+      description: Before submitting the issue, please make sure you do the following
+      options:
+        - label: Searched existing issues for reports of the same feature request to avoid creating a duplicate.
+          required: true

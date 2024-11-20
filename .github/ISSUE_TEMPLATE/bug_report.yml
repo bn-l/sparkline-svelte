@@ -1,0 +1,41 @@
+name: 🐞 Bug report
+description: Report an issue
+labels: [pending triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is. If you intend to submit a PR for this issue, tell us in the description. Thanks!
+      placeholder: Bug description
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: What steps do take to see this bug again.
+      placeholder: Reproduction
+    validations:
+      required: true
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: Output of `npx envinfo --system --binaries`
+      render: shell
+      placeholder: Please run `npx envinfo --system --binaries` and paste here
+    validations:
+      required: true
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Checks
+      description: Before submitting the issue, please make sure you do the following
+      options:
+        - label: Searched existing issues for reports of the same bug to avoid creating a duplicate.
+          required: true
