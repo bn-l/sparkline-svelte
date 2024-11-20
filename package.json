@@ -1,7 +1,12 @@
 {
   "name": "sparkline-svelte",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "author": "bn-l",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bn-l/sparkline-svelte"
+  },
+  "homepage": "https://bn-l.github.io/sparkline-svelte/",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -90,5 +95,25 @@
   },
   "dependencies": {
     "colord": "^2.9.3"
-  }
+  },
+  "description": "A lightweight, responsive Sparkline chart component for Svelte 5 with touch support. Perfect for dashboards, featuring interactive tooltips, customizable styling, and reactive updates. Based on fnando/sparkline with modern improvements.",
+  "keywords": [
+    "svelte",
+    "svelte5",
+    "sparkline",
+    "chart",
+    "graph",
+    "visualization",
+    "dashboard",
+    "svg",
+    "responsive",
+    "interactive",
+    "data-visualization",
+    "typescript",
+    "touch-support",
+    "tooltip",
+    "runes",
+    "mini-chart",
+    "trend-line"
+  ]
 }
