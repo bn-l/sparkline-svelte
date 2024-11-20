@@ -1,6 +1,6 @@
 {
   "name": "sparkline-svelte",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "bn-l",
   "scripts": {
     "dev": "vite dev",
