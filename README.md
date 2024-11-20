@@ -19,7 +19,7 @@ Changes to the data prop or any option will update the SVG reactively (with svel
 Install the package via npm:
 
 ```bash
-`npm install sparkline-svelte`
+npm install sparkline-svelte
 ```
 
 ## Usage
