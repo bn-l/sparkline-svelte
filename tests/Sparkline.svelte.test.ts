@@ -1,3 +1,4 @@
+/// <reference types="@vitest/browser/providers/playwright" />
 /* eslint-disable prefer-const */
 import { flushSync } from "svelte";
 import { describe, expect, test } from "vitest";
