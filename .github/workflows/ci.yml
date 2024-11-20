@@ -54,7 +54,11 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest, macos-latest, windows-latest, windows-2019]
-            fail-fast: false  # Continue running other OS tests even if one fails
+                browser: [chromium, firefox]
+                include:
+                    - os: macos-latest
+                      browser: webkit
+            fail-fast: false
             
         steps:
             - uses: actions/checkout@v4
@@ -65,87 +69,25 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Install playwright chromium
-              run: npm install playwright-chromium
-
-            - name: Install playwright firefox
-              run: npm install playwright-firefox
-
-            - name: Install playwright webkit
-              run: npm install playwright-webkit
-
-            # - name: Install Playwright Browsers
-            #   run: npx playwright install chromium
-
-            # ------ UBUNTU ------
-            # Use xvfb-run only on Ubuntu
-            - name: Playwright chromium tests
-              if: matrix.os == 'ubuntu-latest'
-              run: xvfb-run npm run test:chromium
-
-            # Use xvfb-run only on Ubuntu
-            - name: Playwright firefox tests
-              if: matrix.os == 'ubuntu-latest'
-              run: xvfb-run npm run test:firefox
-
-
-            # ------ MACOS ------
-            # Regular run for other OS
-            - name: Playwright chromium tests
+            # Install browsers conditionally based on OS
+            - name: Install Playwright browsers (macOS)
               if: matrix.os == 'macos-latest'
-              run: npm run test:chromium
+              run: |
+                npm install playwright-chromium
+                npm install playwright-firefox
+                npm install playwright-webkit
 
-            - name: Playwright firefox tests
-              if: matrix.os == 'macos-latest'
-              run: npm run test:firefox
+            - name: Install Playwright browsers (Windows/Ubuntu)
+              if: matrix.os == 'windows-latest' || matrix.os == 'windows-2019' || matrix.os == 'ubuntu-latest'
+              run: |
+                npm install playwright-chromium
+                npm install playwright-firefox
 
-            - name: Playwright webkit tests
-              if: matrix.os == 'macos-latest'
-              run: npm run test:webkit
-
-            # ------ WINDOWS ------
-            - name: Playwright chromium tests
-              if: matrix.os == 'windows-latest'
-              run: npm run test:chromium
-
-            - name: Playwright firefox tests
-              if: matrix.os == 'windows-latest'
-              run: npm run test:firefox
-
-            - uses: actions/upload-artifact@v4
-              if: ${{ !cancelled() }}
+            # Single test command with matrix
+            - name: Run Playwright tests
+              uses: nick-fields/retry@v3
               with:
-                  name: playwright-report-${{ matrix.os }}
-                  path: playwright-report/
-                  retention-days: 30
-                  
-#   test:
-#     runs-on: ${{ matrix.os }}
-
-#     timeout-minutes: 30
-
-#     strategy:
-#       matrix:
-#         os:
-#           - ubuntu-latest
-#           - macos-latest
-#           - windows-latest
-#           - windows-2019
-#       fail-fast: false
-
-#     steps:
-#       - uses: actions/checkout@v4
-#       - uses: actions/setup-node@v4
-#         with:
-#           node-version: 22
-#           cache: 'npm'
-
-#       - name: Install
-#         run: npm ci
-
-#       - name: Playwright Install
-#         run: npx playwright install --with-deps
-
-#       - name: Browser Tests
-#         run: npm run test
+                timeout_minutes: 10
+                max_attempts: 3
+                command: ${{ matrix.os == 'ubuntu-latest' && 'xvfb-run ' || '' }}npm run test:${{ matrix.browser }}
 
