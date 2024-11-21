@@ -12,7 +12,7 @@ A lightweight and customizable Sparkline component for Svelte 5, based on [fnand
 
 This library creates a small responsive line chart (apparently called "sparkline" for whatever reason)--without axis labels--for quick data visualization. It is ideal for displaying trends and patterns in data in a compact form--making it good for use in dashboards, reports, etc. The SVG output scales to fit its container for responsiveness on different screen sizes. 
 
-Changes to the data prop or any option will update the SVG reactively (with svelte 5 managing the SVG dom updates). Performance should be optimal as it just atomically updates the necessary svg paths and the display logic is trivial.
+Changes to the data prop or any option will update the SVG reactively (with svelte 5 managing the SVG dom updates). Performance should be optimal as it just atomically updates the necessary svg paths.
 
 
 ## Installation

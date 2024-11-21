@@ -3,13 +3,13 @@
     class={dOptions?.svgClass}
     width={dOptions?.svgWidth}
     height={dOptions?.svgHeight}
-    viewBox="0 0 {actualWidth} {actualHeight}"
+    viewBox="0 0 {svgWidth} {svgHeight}"
     preserveAspectRatio="none"
     stroke-width={dOptions?.strokeWidth}
     aria-hidden="true"
     role="img"
-    bind:clientWidth={actualWidth}
-    bind:clientHeight={actualHeight}
+    bind:clientWidth={svgWidth}
+    bind:clientHeight={svgHeight}
     bind:this={svgEl}
     onmousemove={interactive ? onMouseMove : null}
     onmouseleave={interactive ? onMouseLeave : null}
@@ -32,6 +32,7 @@
         d={lineCoords}
         fill="none"
         stroke-linecap="square"
+        shape-rendering="geometricPrecision"
     />
 
     {#if interactive && !mouseOut}
@@ -42,15 +43,15 @@
             x1={spotX}
             x2={spotX}
             y1="0"
-            y2={actualHeight}
+            y2={svgHeight}
             stroke-width={dOptions.cursorWidth}
         />
         <!-- Tooltip -->
         {#if dOptions?.showTooltip}
             <foreignObject
                 id="sparkline-tooltip-foreign-object"
-                x={tooltipRectX}
-                y={tooltipRectY}
+                x={tooltipX}
+                y={tooltipY}
                 width={tooltipBorderBoxSize?.[0]?.inlineSize ?? 0}
                 height={tooltipBorderBoxSize?.[0]?.blockSize ?? 0}
             >
@@ -58,7 +59,7 @@
                     id="sparkline-tooltip-text"
                     class="{dOptions?.toolTipClass ??
                         'tooltip-class'} tooltip-defaults"
-                    style=" background-color: {tooltipFillColor}; color: {tooltipTextColor};  font-size: {dOptions?.tooltipFontSize}; border: 0rem solid {lineColor}; max-width: {actualWidth}px;"
+                    style=" background-color: {tooltipFillColor}; color: {tooltipTextColor};  font-size: {dOptions?.tooltipFontSize}; border: 0rem solid {lineColor}; max-width: {svgWidth}px;"
                     bind:borderBoxSize={tooltipBorderBoxSize}
                 >
                     {currentDataPoint?.label
@@ -83,7 +84,9 @@
 
     /* Used for defaults */
     #sparkline-tooltip-text {
+        width: -moz-max-content;
         width: max-content;
+        height: -moz-max-content;
         height: max-content;
         display: inline-flex;
         user-select: none;
@@ -169,6 +172,12 @@
     };
     let dOptions = $derived({ ...defaultOptions, ...options });
 
+    const spotDiameter: number = $derived(dOptions.spotRadius! * 2);
+    const interactive: boolean = $derived(Boolean(dOptions?.interactive));
+
+    let svgWidth = $state(0);
+    let svgHeight = $state(0);
+
     // prettier-ignore
     function getColor(base: Colord | string, changeAmount: number, invertColor: boolean) {
         base = typeof base === "string" ? colord(base) : base;
@@ -177,7 +186,7 @@
             : base.lighten(changeAmount);
     }
 
-    // ------ COLOR SETUP ------
+    // ------------------ COLOR CALC ------------------
 
     // prettier-ignore
     const { lineColor, fillColor, cursorColor, tooltipFillColor, tooltipTextColor } = $derived.by(() => {
@@ -196,10 +205,8 @@
         return { lineColor, fillColor, cursorColor, tooltipFillColor, tooltipTextColor };
     });
 
-    const spotDiameter: number = $derived(dOptions.spotRadius! * 2);
-    const interactive: boolean = $derived(Boolean(dOptions?.interactive));
+    // ------------------ CALC COORDS ------------------
 
-    // Update maxValue calculation to handle both numbers and objects
     let maxValue: number = $derived.by(() =>
         Math.max(
             ...data.map((entry) =>
@@ -208,25 +215,21 @@
         ),
     );
 
-    let actualWidth = $state(0);
-    let actualHeight = $state(0);
-
     let datapoints: DataPoint[] = $derived.by(() => {
-        if (data.length <= 1 || actualWidth === 0 || actualHeight === 0)
-            return [];
+        if (data.length <= 1 || svgWidth === 0 || svgHeight === 0) return [];
 
-        const width = actualWidth - spotDiameter * 2;
-        const height = actualHeight - dOptions.strokeWidth! * 2 - spotDiameter;
+        const xOffset = Math.max(spotDiameter, dOptions.cursorWidth!);
+        const yOffset = dOptions.strokeWidth! + dOptions.spotRadius!;
+
+        const width = svgWidth - xOffset * 2;
+        const height = svgHeight - yOffset * 2;
 
         return data.map((entry, index) => {
             const value = typeof entry === "number" ? entry : entry.value;
             const label = typeof entry === "number" ? undefined : entry.label;
 
-            let x = (index / (data.length - 1)) * width + spotDiameter;
-            let y =
-                actualHeight -
-                (value / maxValue) * height -
-                (dOptions.strokeWidth! + dOptions.spotRadius!);
+            let x = (index / (data.length - 1)) * width + xOffset;
+            let y = svgHeight - (value / maxValue) * height - yOffset;
             return { x, y, value, label, index };
         });
     });
@@ -252,7 +255,7 @@
         // Create the fill path using the adjusted points
         const fillPath =
             "M " + adjustedPoints.map((d) => `${d.x} ${d.y}`).join(" L ");
-        return `${fillPath} V ${actualHeight} L ${datapoints[0].x} ${actualHeight} Z`;
+        return `${fillPath} V ${svgHeight} L ${datapoints[0].x} ${svgHeight} Z`;
     });
 
     //  ------------------ CURSOR + TOOLTIP ------------------
@@ -265,33 +268,25 @@
     let svgEl: SVGElement;
 
     let currentDataPoint = $derived.by(() => {
+        // NB: Only runs when when the mouse is in the element
         if (mouseOut || !interactive || !svgEl) return null;
 
-        const svgRect = svgEl.getBoundingClientRect();
-        const mouseX = clientX - svgRect.left;
-        const mouseRelativeX = (mouseX / svgRect.width) * actualWidth;
+        //         svgRect.left   clientX (x mouse pos)
+        // --------------|-----------|
+        const mouseSvgX = clientX - svgEl.getBoundingClientRect().left;
 
-        let nextDataPoint =
-            datapoints.find((entry) => entry.x >= mouseRelativeX) ??
-            datapoints[datapoints.length - 1];
+        let closestDataPoint: DataPoint | null = null;
 
-        const previousIndex = datapoints.indexOf(nextDataPoint) - 1;
-        const previousDataPoint = datapoints[previousIndex];
-
-        let currentDataPoint;
-        let halfway;
-
-        if (previousDataPoint) {
-            halfway =
-                previousDataPoint.x +
-                (nextDataPoint.x - previousDataPoint.x) / 2;
-            currentDataPoint =
-                mouseRelativeX >= halfway ? nextDataPoint : previousDataPoint;
-        } else {
-            currentDataPoint = nextDataPoint;
+        for (const datapoint of datapoints) {
+            if (
+                Math.abs(mouseSvgX - datapoint.x) <
+                Math.abs(mouseSvgX - (closestDataPoint?.x ?? Infinity))
+            ) {
+                closestDataPoint = datapoint;
+            }
         }
 
-        return currentDataPoint;
+        return closestDataPoint;
     });
 
     let [spotX, spotY] = $derived.by(() => {
@@ -299,31 +294,36 @@
         return [currentDataPoint.x, currentDataPoint.y];
     });
 
-    let [tooltipRectX, tooltipRectY] = $derived.by(() => {
+    let [tooltipX, tooltipY] = $derived.by(() => {
         if (mouseOut || !currentDataPoint || !tooltipBorderBoxSize) {
             return [0, 0];
         }
 
-        // Initial tooltip position
-        let tooltipX = currentDataPoint.x;
-        let tooltipY = currentDataPoint.y - dOptions.spotRadius! - 10; // Offset above the point
+        const tooltipWidth = tooltipBorderBoxSize[0].inlineSize;
+        const tooltipHeight = tooltipBorderBoxSize[0].blockSize;
+        const spotOffset = dOptions.spotRadius! * 1.1 + 10; // Offset above the spot
 
-        // Adjust for tooltip dimensions
-        let tooltipRectX = tooltipX - tooltipBorderBoxSize[0].inlineSize / 2;
-        let tooltipRectY = tooltipY - tooltipBorderBoxSize[0].blockSize;
+        // Initial position
+        let x = currentDataPoint.x;
+        let y = currentDataPoint.y - spotOffset;
 
-        // Keep the tooltip within the SVG bounds
-        if (tooltipRectX < 0) {
-            tooltipRectX = 0;
-        }
-        if (tooltipRectX + tooltipBorderBoxSize[0].inlineSize > actualWidth) {
-            tooltipRectX = actualWidth - tooltipBorderBoxSize[0].inlineSize;
-        }
-        if (tooltipRectY < 0) {
-            tooltipRectY = 0;
+        // Shift tooltip to the center and above the datapoint
+        x = x - tooltipWidth / 2;
+        y = y - tooltipHeight;
+
+        // Keep within the SVG bounds
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+
+        if (x + tooltipWidth > svgWidth) {
+            x = svgWidth - tooltipWidth;
         }
 
-        return [tooltipRectX, tooltipRectY];
+        if (y + tooltipHeight > svgHeight) {
+            y = svgHeight - tooltipHeight;
+        }
+
+        return [x, y];
     });
 
     $effect(() => {

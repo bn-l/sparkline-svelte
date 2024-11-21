@@ -92,4 +92,23 @@
         "graphql",
         "astro"
     ],
+    "files.exclude": {
+        "**/.git": true, // Exclude Git metadata folder
+        "**/.svn": true, // Exclude Subversion metadata folder
+        "**/.hg": true, // Exclude Mercurial metadata folder
+        "**/CVS": true, // Exclude CVS metadata folder
+        "**/.DS_Store": true, // Exclude macOS Finder metadata file
+        "**/Thumbs.db": true, // Exclude Windows thumbnail cache file
+        "**/.idea": true, // Exclude JetBrains IDE settings folder
+        "**/__pycache__": true, // Exclude Python bytecode cache folder
+        "**/*.pyc": true, // Exclude Python compiled bytecode files
+        "**/*.pyo": true, // Exclude Python optimized bytecode files
+        "**/*.egg-info": true, // Exclude Python package metadata folders
+        "**/.mypy_cache": true, // Exclude mypy type checking cache folder
+        "**/.pytest_cache": true, // Exclude pytest test runner cache folder
+        "**/.tox": true, // Exclude tox virtual environment folder
+        "**/.venv": true, // Exclude Python virtual environment folder
+        "**/node_modules": true,
+        "dist": true
+      },
 }
