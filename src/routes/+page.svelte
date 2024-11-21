@@ -50,7 +50,7 @@
 </div>
 
 <script lang="ts">
-    import Sparkline from "$lib/Sparkline.svelte";
+    import { Sparkline } from "$lib/index.js";
     import type { DataPoint } from "$lib/Sparkline.svelte";
     import code from "./+page.svelte?raw";
 

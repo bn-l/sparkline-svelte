@@ -1,43 +1,44 @@
 name: Publish Package
 
 on:
-  push:
-    tags:
-      - 'v*'
-
+    push:
+        tags:
+            - "v*"
+        branches:
+            - main
 
 jobs:
-  publish:
-    if: github.event.repository.fork == false
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    environment: Release
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    publish:
+        if: github.event.repository.fork == false
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            id-token: write
+        environment: Release
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
-      - name: Set node version to 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org/
-          cache: npm
+            - name: Set node version to 22
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  registry-url: https://registry.npmjs.org/
+                  cache: npm
 
-      - name: Install
-        run: npm ci
+            - name: Install
+              run: npm ci
 
-      - name: Build
-        run: npm run package
+            - name: Build
+              run: npm run package
 
-      - name: Publish to npm
-        run: npm run publish-ci ${{ github.ref_name }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Publish to npm
+              run: npm run publish-ci ${{ github.ref_name }}
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # - name: Generate Changelog
-      #   run: npx changelogithub
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            # - name: Generate Changelog
+            #   run: npx changelogithub
+            #   env:
+            #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -30,7 +30,7 @@ npm install sparkline-svelte
 
 ```svelte
 <script>
-    import Sparkline from "sparkline-svelte"; 
+    import { Sparkline } from "sparkline-svelte"; 
 </script>
 
 <Sparkline data={[5, 10, 15, 10, 5]} />
@@ -139,7 +139,7 @@ You can bind to `cursorData` to get the current data point under the cursor:
 
 ```svelte
 <script>     
-    import Sparkline from "sparkline-svelte";     
+    import { Sparkline } from "sparkline-svelte";     
     let data = [5, 10, 15, 10, 5];     
     let cursorData = $state(null); 
 </script>  
@@ -161,7 +161,7 @@ You can bind to `cursorData` to get the current data point under the cursor:
 
 ```svelte
 <script>     
-    import Sparkline from "sparkline-svelte";      
+    import { Sparkline } from "sparkline-svelte";      
     let data = [         
         { label: "Jan", value: 10 },         
         { label: "Feb", value: 15 },         
@@ -180,7 +180,7 @@ In this example, by supplying a `label` for each data point, the tooltip will di
 
 ```svelte
 <script>     
-    import Sparkline from "sparkline-svelte";      
+    import { Sparkline } from "sparkline-svelte";      
     let data = $state([]);      
     // Simulate data updates     
     let interval;      

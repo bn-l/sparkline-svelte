@@ -50,7 +50,7 @@ jobs:
     test:
         timeout-minutes: 60
         runs-on: ${{ matrix.os }}
-        
+
         strategy:
             matrix:
                 os: [ubuntu-latest, macos-latest, windows-latest, windows-2019]
@@ -59,7 +59,7 @@ jobs:
                     - os: macos-latest
                       browser: webkit
             fail-fast: false
-            
+
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
@@ -73,21 +73,20 @@ jobs:
             - name: Install Playwright browsers (macOS)
               if: matrix.os == 'macos-latest'
               run: |
-                npm install playwright-chromium
-                npm install playwright-firefox
-                npm install playwright-webkit
+                  npm install playwright-chromium
+                  npm install playwright-firefox
+                  npm install playwright-webkit
 
             - name: Install Playwright browsers (Windows/Ubuntu)
               if: matrix.os == 'windows-latest' || matrix.os == 'windows-2019' || matrix.os == 'ubuntu-latest'
               run: |
-                npm install playwright-chromium
-                npm install playwright-firefox
+                  npm install playwright-chromium
+                  npm install playwright-firefox
 
             # Single test command with matrix
             - name: Run Playwright tests
               uses: nick-fields/retry@v3
               with:
-                timeout_minutes: 10
-                max_attempts: 3
-                command: ${{ matrix.os == 'ubuntu-latest' && 'xvfb-run ' || '' }}npm run test:${{ matrix.browser }}
-
+                  timeout_minutes: 10
+                  max_attempts: 3
+                  command: ${{ matrix.os == 'ubuntu-latest' && 'xvfb-run ' || '' }}npm run test:${{ matrix.browser }}
