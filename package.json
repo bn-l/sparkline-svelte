@@ -1,6 +1,6 @@
 {
   "name": "sparkline-svelte",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "bn-l",
   "repository": {
     "type": "git",
@@ -94,7 +94,8 @@
     "svelte-eslint-parser": "^0.43.0"
   },
   "dependencies": {
-    "colord": "^2.9.3"
+    "colord": "^2.9.3",
+    "sparkline-svelte": "^0.1.10"
   },
   "description": "A lightweight, responsive Sparkline chart component for Svelte 5 with touch support. Perfect for dashboards, featuring interactive tooltips, customizable styling, and reactive updates. Based on fnando/sparkline with modern improvements.",
   "keywords": [
