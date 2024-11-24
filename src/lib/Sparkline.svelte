@@ -1,8 +1,8 @@
 <svg
     id="sparkline-svg"
     class={dOptions?.svgClass}
-    width={dOptions?.height}
-    height={dOptions?.width}
+    width={dOptions?.width}
+    height={dOptions?.height}
     viewBox="0 0 {svgWidth} {svgHeight}"
     preserveAspectRatio="none"
     stroke-width={dOptions?.strokeWidth}
