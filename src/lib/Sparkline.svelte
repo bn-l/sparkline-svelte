@@ -1,8 +1,8 @@
 <svg
     id="sparkline-svg"
     class={dOptions?.svgClass}
-    width={dOptions?.svgWidth}
-    height={dOptions?.svgHeight}
+    width={dOptions?.height}
+    height={dOptions?.width}
     viewBox="0 0 {svgWidth} {svgHeight}"
     preserveAspectRatio="none"
     stroke-width={dOptions?.strokeWidth}
@@ -18,12 +18,14 @@
     style="fill: none; touch-action: none;"
 >
     <!-- Fill -->
-    <path
-        id="sparkline-fill-path"
-        style="fill: {fillColor};"
-        d={fillCoords}
-        stroke={fillColor}
-    />
+    {#if !dOptions?.noFill}
+        <path
+            id="sparkline-fill-path"
+            style="fill: {fillColor};"
+            d={fillCoords}
+            stroke={fillColor}
+        />
+    {/if}
 
     <!-- Graph Line -->
     <path
@@ -126,8 +128,8 @@
 
     export interface Options {
         fetch?: (entry: any) => number;
-        svgHeight?: string;
-        svgWidth?: string;
+        width?: string;
+        height?: string;
         spotRadius?: number;
         cursorWidth?: number;
         interactive?: boolean;
@@ -135,6 +137,8 @@
         ariaLabel?: string;
         lineColor?: string;
         fillColor?: string;
+        noFill?: boolean;
+        invertFill?: boolean;
         cursorColor?: string;
         showTooltip?: boolean;
         tooltipTextColor?: string;
@@ -162,8 +166,8 @@
     }: Props & { cursorData?: DataPoint | null } = $props();
 
     const defaultOptions: Partial<Options> = {
-        svgWidth: "100%",
-        svgHeight: "100%",
+        height: "100%",
+        width: "100%",
         strokeWidth: 6,
         spotRadius: 2,
         tooltipFontSize: "0.875rem",
@@ -193,7 +197,7 @@
         const lineColord = dOptions?.lineColor
         ? colord(dOptions.lineColor)
         : colord("#FF476F");
-        const fillColor = dOptions?.fillColor ?? getColor(lineColord, 0.2, false).toHex();
+        const fillColor = dOptions?.fillColor ?? getColor(lineColord, 0.2, dOptions?.invertFill ?? false).toHex();
         const cursorColor = dOptions?.cursorColor ?? getColor(lineColord, 0.1, true).toHex();
         const tooltipFillColor =
             dOptions?.tooltipFillColor ?? getColor(fillColor, 0.1, false).toHex();
