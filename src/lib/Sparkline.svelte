@@ -48,6 +48,16 @@
             y2={svgHeight}
             stroke-width={dOptions.cursorWidth}
         />
+        {#if dOptions?.showSpot}
+            <!-- Spot -->
+            <circle
+                id="sparkline-spot"
+                cx={spotX}
+                cy={spotY}
+                r={dOptions.spotRadius}
+                style="fill: {lineColor}; stroke: {lineColor};"
+            />
+        {/if}
         <!-- Tooltip -->
         {#if dOptions?.showTooltip}
             <foreignObject
@@ -130,6 +140,7 @@
         fetch?: (entry: any) => number;
         width?: string;
         height?: string;
+        showSpot?: boolean;
         spotRadius?: number;
         cursorWidth?: number;
         interactive?: boolean;

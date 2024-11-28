@@ -147,8 +147,8 @@ describe("Sparkline", () => {
                     data: [1, 2, 3],
                     options: {
                         interactive: true,
-                        svgWidth: "100px",
-                        svgHeight: "100px",
+                        width: "100px",
+                        height: "100px",
                     },
                 },
             });
@@ -178,8 +178,8 @@ describe("Sparkline", () => {
                     data: [1, 2, 3],
                     options: {
                         interactive: true,
-                        svgWidth: "100px",
-                        svgHeight: "100px",
+                        width: "100px",
+                        height: "100px",
                     },
                 },
             });
@@ -259,8 +259,8 @@ describe("Sparkline", () => {
             const rendered = render(Sparkline, {
                 data: [0, 50, 100],
                 options: {
-                    svgWidth: "100px",
-                    svgHeight: "100px",
+                    width: "100px",
+                    height: "100px",
                 },
             });
 
@@ -290,8 +290,8 @@ describe("Sparkline", () => {
                 props: {
                     data,
                     options: {
-                        svgWidth: "100px",
-                        svgHeight: "100px",
+                        width: "100px",
+                        height: "100px",
                     },
                 },
             });
@@ -327,8 +327,8 @@ describe("Sparkline", () => {
             const rendered = render(Sparkline, {
                 data: [50, 50, 50],
                 options: {
-                    svgWidth: "100px",
-                    svgHeight: "100px",
+                    width: "100px",
+                    height: "100px",
                 },
             });
 
