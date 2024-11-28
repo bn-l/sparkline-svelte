@@ -5,8 +5,8 @@
             <Sparkline
                 {data}
                 options={{
-                    height: "100em",
-                    width: "100em",
+                    height: "100%",
+                    width: "100%",
                     interactive: true,
                     showTooltip: true,
                     lineColor: color,
