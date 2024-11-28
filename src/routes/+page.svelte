@@ -10,6 +10,7 @@
                     interactive: true,
                     showTooltip: true,
                     lineColor: color,
+                    showSpot: true,
                 }}
                 bind:cursorData={cursorInfo}
             />
