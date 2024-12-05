@@ -166,7 +166,11 @@
 </script>
 
 <script lang="ts">
-    import { colord, type Colord } from "colord";
+    import { colord, type Colord, extend } from "colord";
+    import namesPlugin from "colord/plugins/names";
+
+    // @ts-expect-error library's types are not up to date
+    extend([namesPlugin]);
 
     //  ------------------ SET UP ------------------
 
@@ -205,6 +209,8 @@
 
     // prettier-ignore
     const { lineColor, fillColor, cursorColor, tooltipFillColor, tooltipTextColor } = $derived.by(() => {
+
+        const lc = dOptions?.lineColor;
         const lineColord = dOptions?.lineColor
         ? colord(dOptions.lineColor)
         : colord("#FF476F");

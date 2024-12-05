@@ -9,7 +9,7 @@ on:
 
 jobs:
     publish:
-        if: github.event.repository.fork == false
+        # if: github.event.repository.fork == false
         runs-on: ubuntu-latest
         permissions:
             contents: read
